@@ -8,27 +8,40 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Request } from 'express';
 import { UserDocument } from 'src/user/schemas/user.schema';
 import { UserService } from 'src/user/user.service';
+import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/login.dto';
 import { SignUpDto } from './dtos/signup.dto';
 import { LocalAuthGuard } from './guards/local.guard';
+import { LoginSerializer } from './serializers/login.serializer';
 import { UserSerializer } from './serializers/user.serializer';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: UserSerializer })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async login(@Req() req: Request, @Body() _body: LoginDto) {
-    return new UserSerializer(req.user as UserDocument);
+  @ApiBody({ type: LoginDto })
+  @ApiOkResponse({ type: LoginSerializer })
+  async login(@Req() req: Request) {
+    return new LoginSerializer(
+      await this.authService.login(req.user as UserDocument),
+      new UserSerializer(req.user as UserDocument),
+    );
   }
 
   @Post('signup')
