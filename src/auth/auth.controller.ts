@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   ConflictException,
   Controller,
   HttpCode,
@@ -7,6 +8,7 @@ import {
   Post,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -37,6 +39,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({ type: LoginSerializer })
+  @UseInterceptors(ClassSerializerInterceptor)
   async login(@Req() req: Request) {
     return new LoginSerializer(
       await this.authService.login(req.user as UserDocument),
@@ -45,6 +48,7 @@ export class AuthController {
   }
 
   @Post('signup')
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiCreatedResponse({ type: UserSerializer })
   async signUp(@Body() body: SignUpDto): Promise<UserSerializer> {
     const existingUser = await this.userService.getByEmail(body.email);
