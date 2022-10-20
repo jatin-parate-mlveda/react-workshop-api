@@ -26,7 +26,7 @@ import { LocalAuthGuard } from './guards/local.guard';
 import { LoginSerializer } from './serializers/login.serializer';
 import { UserSerializer } from './serializers/user.serializer';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
