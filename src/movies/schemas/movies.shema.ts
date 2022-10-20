@@ -22,11 +22,11 @@ export class Movie implements IMovie {
 
   @ApiProperty()
   @Prop()
-  cast: number[];
+  cast: string[];
 
   @ApiProperty({ required: false, type: String })
   @Prop({ type: String })
-  post?: string | undefined;
+  poster?: string | undefined;
 
   @ApiProperty()
   @Prop()

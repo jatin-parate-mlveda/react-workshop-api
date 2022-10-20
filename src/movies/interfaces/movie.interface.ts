@@ -8,8 +8,8 @@ export interface IMovie {
   plot: string;
   genres: string[];
   runtime: number;
-  cast: number[];
-  post?: string;
+  cast: string[];
+  poster?: string;
   title: string;
   fullplot: string;
   languages: string[];

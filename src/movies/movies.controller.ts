@@ -1,6 +1,7 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { GetMoviesQueryDto } from './dtos/get-movies-query.dto';
 import { MoviesService } from './movies.service';
 import { Movie } from './schemas/movies.shema';
 
@@ -13,7 +14,7 @@ export class MoviesController {
   @ApiOkResponse({ type: Movie })
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllMovies() {
-    return await this.moviesService.getAll();
+  async getAllMovies(@Query() queryDto: GetMoviesQueryDto) {
+    return await this.moviesService.getAll(queryDto);
   }
 }
