@@ -17,26 +17,26 @@ export class MoviesService {
 
   async getAll(queryDto: GetMoviesQueryDto) {
     try {
-      let filter: any | undefined;
+      const filter: any = {
+        poster: { $exists: true },
+      };
 
       if (queryDto.searchText) {
         const regexp = new RegExp(queryDto.searchText, 'i');
-        filter = {
-          $or: [
-            {
-              title: regexp,
-            },
-            {
-              plot: regexp,
-            },
-            {
-              writers: { $in: regexp },
-            },
-            {
-              cast: { $in: regexp },
-            },
-          ],
-        };
+        filter.$or = [
+          {
+            title: regexp,
+          },
+          {
+            plot: regexp,
+          },
+          {
+            writers: { $in: regexp },
+          },
+          {
+            cast: { $in: regexp },
+          },
+        ];
       }
 
       return await this.movieModal
