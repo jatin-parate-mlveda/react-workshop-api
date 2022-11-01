@@ -10,7 +10,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  console.log(process.env.NODE_ENV, process.env.DB_URL);
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
