@@ -36,7 +36,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
-  Logger.log(configService.get('NODE_ENV'), configService.get('DB_URL'));
 
   await app.listen(port);
 }
