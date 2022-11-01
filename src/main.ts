@@ -2,7 +2,7 @@ import { TextEncoder, TextDecoder } from 'util';
 global.TextEncoder = TextEncoder;
 // @ts-ignore
 global.TextDecoder = TextDecoder;
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -10,6 +10,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  console.log(process.env.NODE_ENV, process.env.DB_URL);
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
@@ -36,6 +37,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
+  Logger.log(configService.get('NODE_ENV'), configService.get('DB_URL'));
 
   await app.listen(port);
 }
