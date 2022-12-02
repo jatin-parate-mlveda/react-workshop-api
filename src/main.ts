@@ -38,5 +38,6 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(port);
+  console.log(41, process.version);
 }
 bootstrap();
